@@ -49,10 +49,12 @@ int main() {
         case 0:
             cout << "첫번째 유저(X)의 차례입니다 -> ";
             currentUser = 'X';
+            turn = 0;
             break;
         case 1:
             cout << "두번째 유저(O)의 차례입니다 -> ";
             currentUser = 'O';
+            turn = 1;
             break;
         }
 
