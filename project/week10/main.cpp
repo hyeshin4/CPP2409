@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "user.h"
+#include <vector>
 using namespace std;
 
 // 맵의 크기
@@ -8,26 +9,26 @@ const int mapX = 5;
 const int mapY = 5;
 
 // 사용자 정의 함수
-void displayMap(int map[][mapX], int user_x, int user_y);
+void displayMap(const vector<vector<int> >& map, int user_x, int user_y);
 // 맵을 print하는 함수
 bool checkXY(int x, int y);
 // player가 맵 밖에 있는지 확인하는 함수
-bool checkGoal(int map[][mapX], int x, int y);
+bool checkGoal(const vector<vector<int> >& map, int x, int y);
 // 목적지에 도달했는지 확인하는 함수
-void handlePositionEffect(int map[][mapX], User &player, int x, int y);
+void handlePositionEffect(const vector<vector<int>>& map, User &player, int x, int y);
 // 아이템-적과 상호작용하는 함수
-void movePlayer(int map[][mapX], User &player, int &x, int &y, int dx, int dy);
+void movePlayer(vector<vector<int>>& map, User &player, int &x, int &y, int dx, int dy);
 //사용자를 이동하는 함수
 
 // 메인 함수
 int main() {
 	// 0은 빈 공간, 1은 아이템, 2는 적, 3은 포션, 4는 목적지
-    int map[mapY][mapX] = { 
-        {0, 1, 2, 0, 4},
-        {1, 0, 0, 2, 0},
-        {0, 0, 0, 0, 0},
-        {0, 2, 3, 0, 0},
-        {3, 0, 0, 0, 2} 
+    vector<vector<int>> map = { 
+        vector<int>{0, 1, 2, 0, 4},
+        vector<int>{1, 0, 0, 2, 0},
+        vector<int>{0, 0, 0, 0, 0},
+        vector<int>{0, 2, 3, 0, 0},
+        vector<int>{3, 0, 0, 0, 2}
     };
 
 	// 유저의 위치를 저장할 변수, hp 변수
@@ -73,7 +74,7 @@ int main() {
 }
 
 // 지도와 사용자 위치 출력하는 함수
-void displayMap(int map[][mapX], int user_x, int user_y) {
+void displayMap(const vector<vector<int>>& map, int user_x, int user_y) {
     for (int i = 0; i < mapY; i++) {
         for (int j = 0; j < mapX; j++) {
             if (i == user_y && j == user_x) {
@@ -98,12 +99,12 @@ bool checkXY(int x, int y) {
 }
 
 // 유저의 위치가 목적지인지 체크하는 함수
-bool checkGoal(int map[][mapX], int x, int y) {
+bool checkGoal(const vector<vector<int>>& map, int x, int y) {
     return (map[y][x] == 4); // 목적지 도착하면 true 반환
 }
 
 // 아이템, 적, 포션을 만났을 때
-void handlePositionEffect(int map[][mapX], User &player, int x, int y) {
+void handlePositionEffect(const vector<vector<int>>& map, User &player, int x, int y) {
     switch (map[y][x]) {
         case 1: //아이템을 만난 경우
             cout << "아이템이 있습니다." << endl; 
@@ -124,7 +125,7 @@ void handlePositionEffect(int map[][mapX], User &player, int x, int y) {
 }
 
 //player 이동 함수 (기존 코드의 반복되는 부분을 함수화 했습니다)
-void movePlayer(int map[][mapX], User &player, int &x, int &y, int dx, int dy) {
+void movePlayer(vector<vector<int>>& map, User &player, int &x, int &y, int dx, int dy) {
     // 이동한 위치
     int newX = x + dx;
     int newY = y + dy;
