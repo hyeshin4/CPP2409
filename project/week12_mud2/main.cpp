@@ -52,8 +52,8 @@ int main() {
 
     Magician magician;
     Warrior warrior;
-
     vector<User*> players = {&magician, &warrior};
+
     // 각 플레이어의 위치를 저장
     int magicianX = 0, magicianY = 0;
     int warriorX = 0, warriorY = 0; 
@@ -66,18 +66,37 @@ int main() {
         int& currentX = (turn % players.size() == 0) ? magicianX : warriorX;
         int& currentY = (turn % players.size() == 0) ? magicianY : warriorY;
 
-        displayMap(map, magicianX, magicianY, warriorX, warriorY);
-        currentPlayer->takeTurn(map, currentX, currentY, mapX, mapY, *currentPlayer);
+        cout << "\n" << currentPlayer->getName() << "의 차례입니다. 명령어를 입력하세요 (상, 하, 좌, 우, 지도, 정보, 종료): ";
+        string command;
+        cin >> command;
 
+        if (command == "상") {
+            if(currentPlayer->move(map, *currentPlayer, currentX, currentY, 0, -1, mapX, mapY)) turn++;
+        } else if (command == "하") {
+            if(currentPlayer->move(map, *currentPlayer, currentX, currentY, 0, 1, mapX, mapY))turn++;
+        } else if (command == "좌") {
+            if(currentPlayer->move(map, *currentPlayer,currentX, currentY, -1, 0, mapX, mapY))turn++;
+        } else if (command == "우") {
+            if(currentPlayer->move(map, *currentPlayer,currentX, currentY, 1, 0, mapX, mapY))turn++;
+        } else if (command == "지도") {
+            displayMap(map, magicianX, magicianY, warriorX, warriorY); // 지도 출력
+        } else if (command == "정보") {
+            cout << *currentPlayer; // 정보 출력
+        } else if (command == "종료") {
+            cout << "게임을 종료합니다." << endl;
+            break;
+        } else {
+            cout << "잘못된 입력입니다. 다시 입력하세요." << endl;
+            continue;
+        }
 
-        if (currentPlayer->GetHP() <= 0) 
-        {
-            cout << currentPlayer->getName() << "의 HP가 0 이하가 되어 게임 종료.\n";
+        if (currentPlayer->checkGoal(map, currentX, currentY)) {
+            cout << "목적지에 도착했습니다! 축하합니다!\n게임을 종료합니다." << endl;
             break;
         }
-        turn++;
+
     }
 
-    cout << "게임이 종료되었습니다." << endl;
+
     return 0;
 }

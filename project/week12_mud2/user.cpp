@@ -61,48 +61,23 @@ bool User::checkGoal(const vector<vector<int>>& map, int x, int y) {
     return map[y][x] == 4;
 }
 
-void User::takeTurn(vector<vector<int>>& map, int& x, int& y, int mapX, int mapY, const User &player) {
-    cout <<"현재 HP: "<< player.hp << " 명령어를 입력하세요 (상, 하, 좌, 우, 종료, 정보): ";
-    string user_input;
-    cin >> user_input;
-
-    int dx = 0, dy = 0;
-    if (user_input == "상") dy = -1;
-    else if (user_input == "하") dy = 1;
-    else if (user_input == "좌") dx = -1;
-    else if (user_input == "우") dx = 1;
-    else if (user_input == "종료") {
-        cout << name << "이(가) 게임을 종료합니다." << endl;
-        hp = 0; // 게임 종료 조건
-        return;
-    } 
-    else if (user_input == "정보"){
-        cout << player << endl;
-        return;
-    }
-
-    else {
-        cout << "잘못된 입력입니다." << endl;
-        return;
-    }
-
+bool User::move(vector<vector<int>>& map, User &player, int &x, int &y, int dx, int dy, int mapX, int mapY) {
+    // 이동한 위치
     int newX = x + dx;
     int newY = y + dy;
-
     if (checkXY(newX, newY, mapX, mapY)) {
         x = newX;
         y = newY;
-        DecreaseHP(1); // 이동 시 HP 감소
-        handlePositionEffect(map, x, y);
-
-        if (checkGoal(map, x, y)) {
-            cout << name << "이(가) 목적지에 도달했습니다!" << endl;
-            hp = 0; // 게임 종료 조건
-        }
+        player.DecreaseHP(1);
+        //hp -= 1; // 체력 -1
+        handlePositionEffect(map, x, y); // 아이템-적과 만났을 때 상호작용
+        return true;
     } else {
-        cout << "맵을 벗어났습니다!" << endl;
+        cout << "맵을 벗어났습니다. 다시 돌아갑니다." << endl; //맵을 벗어나는 입력을 받은 경우
+        return false;
     }
 }
+
 
 void User::doAttack()
 {

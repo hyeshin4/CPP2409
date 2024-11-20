@@ -18,11 +18,10 @@ public:
     int getItemCnt();
     void setItemCnt();
     void doAttack();
-    void takeTurn(vector<vector<int>>& map, int& x, int& y, int mapX, int mapY, const User &player);
     void handlePositionEffect(const vector<vector<int>>& map, int x, int y);
     static bool checkXY(int x, int y, int mapX, int mapY);
     static bool checkGoal(const vector<vector<int>>& map, int x, int y);
-    void movePlayer(vector<vector<int>>& map, int &hp, int &x, int &y, int dx, int dy);
+    bool move(vector<vector<int>>& map, User &player, int &x, int &y, int dx, int dy,int mapX, int mapY);
 
 };
 
