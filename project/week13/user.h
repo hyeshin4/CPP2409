@@ -4,35 +4,56 @@
 using namespace std;
 
 class User {
-protected:
-    int hp;
-    int itemCnt; // 아이템 먹은 횟수를 저장하는 변수
-    string name;
 public:
-    User(string name);
-    virtual string getName();
-    virtual void IncreaseHP(int inc_hp);
-    virtual void DecreaseHP(int dec_hp);
-    virtual int GetHP();   
-    friend ostream &operator<<(ostream &os, const User &a);
-    virtual int getItemCnt();
-    virtual void setItemCnt();
-    virtual void doAttack();
-    virtual void handlePositionEffect(const vector<vector<int>>& map, int x, int y);
+    virtual ~User() {}
+    virtual string getName() const = 0;
+    virtual void IncreaseHP(int inc_hp) = 0;
+    virtual void DecreaseHP(int dec_hp) = 0;
+    virtual int GetHP() const = 0;
+    virtual int getItemCnt() const = 0;
+    virtual void setItemCnt() = 0;
+    virtual void doAttack() const = 0;
+    virtual void handlePositionEffect(const vector<vector<int>>& map, int x, int y) = 0;
+    virtual bool move(vector<vector<int>>& map, int &x, int &y, int dx, int dy, int mapX, int mapY) = 0;
+
     static bool checkXY(int x, int y, int mapX, int mapY);
     static bool checkGoal(const vector<vector<int>>& map, int x, int y);
-    virtual bool move(vector<vector<int>>& map, User &player, int &x, int &y, int dx, int dy,int mapX, int mapY);
 
+    friend ostream &operator<<(ostream &os, const User &a);
 };
 
-class Magician : public User{
+class Magician : public User {
+private:
+    int hp;
+    int itemCnt;
+    string name;
 public:
-    Magician() : User("M") {}
-    void doAttack() override;
+    Magician();
+    string getName() const override;
+    void IncreaseHP(int inc_hp) override;
+    void DecreaseHP(int dec_hp) override;
+    int GetHP() const override;
+    int getItemCnt() const override;
+    void setItemCnt() override;
+    void doAttack() const override;
+    void handlePositionEffect(const vector<vector<int>>& map, int x, int y) override;
+    bool move(vector<vector<int>>& map, int &x, int &y, int dx, int dy, int mapX, int mapY) override;
 };
 
-class Warrior : public User{
+class Warrior : public User {
+private:
+    int hp;
+    int itemCnt;
+    string name;
 public:
-    Warrior() : User("W") {}
-    void doAttack() override;
+    Warrior();
+    string getName() const override;
+    void IncreaseHP(int inc_hp) override;
+    void DecreaseHP(int dec_hp) override;
+    int GetHP() const override;
+    int getItemCnt() const override;
+    void setItemCnt() override;
+    void doAttack() const override;
+    void handlePositionEffect(const vector<vector<int>>& map, int x, int y) override;
+    bool move(vector<vector<int>>& map, int &x, int &y, int dx, int dy, int mapX, int mapY) override;
 };
